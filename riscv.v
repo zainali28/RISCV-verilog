@@ -18,118 +18,118 @@ module control_unit(
   case(inst[6:0])
     7'b0110011: begin  //R-type
       case(inst[14:12])  //alu select logic
-        3'b000: alu_sel = inst[30] ? 1 : 0;  //ADD=0, SUB=1
-        3'b001: alu_sel = 2;  //SLL=2
-        3'b010: alu_sel = 3;  //SLT=3
-        3'b011: alu_sel = 4;  //SLTU=4
-        3'b100: alu_sel = 5;  //XOR=5
-        3'b101: alu_sel = inst[30] ? 7 : 6;  //SRL=6, SRA=7
-        3'b110: alu_sel = 8;  //OR=8
-        3'b111: alu_sel = 9;  //AND=9
+        3'b000: alu_sel <= inst[30] ? 1 : 0;  //ADD=0, SUB=1
+        3'b001: alu_sel <= 2;  //SLL=2
+        3'b010: alu_sel <= 3;  //SLT=3
+        3'b011: alu_sel <= 4;  //SLTU=4
+        3'b100: alu_sel <= 5;  //XOR=5
+        3'b101: alu_sel <= inst[30] ? 7 : 6;  //SRL=6, SRA=7
+        3'b110: alu_sel <= 8;  //OR=8
+        3'b111: alu_sel <= 9;  //AND=9
       endcase
       
-      pc_sel = 0;
-      wb_en = 1;
-      op1 = 0;
-      op2 = 0;
-      wb_sel = 1; // use blocking assignment here
+      pc_sel <= 0;
+      wb_en <= 1;
+      op1 <= 0;
+      op2 <= 0;
+      wb_sel <= 1; // use blocking assignment here
       
     end
     7'b0010011: begin  //I-type
       case(inst[14:12])  //alu select, imm gen logic
         3'b000: begin 
-            alu_sel = 0;  //ADD=0
-            imm_sel = 0;  //I-type
+            alu_sel <= 0;  //ADD=0
+            imm_sel <= 0;  //I-type
           end
         3'b001: begin 
-            alu_sel = 2;  //SLL=2
-            imm_sel = 5;  //I-type SLL
+            alu_sel <= 2;  //SLL=2
+            imm_sel <= 5;  //I-type SLL
           end
         3'b010: begin
-            alu_sel = 3;  //SLT=3
-            imm_sel = 0;
+            alu_sel <= 3;  //SLT=3
+            imm_sel <= 0;
           end
         3'b011: begin
-            alu_sel = 4;  //SLTU=4
-            imm_sel = 0;
+            alu_sel <= 4;  //SLTU=4
+            imm_sel <= 0;
           end
         3'b100: begin 
-            alu_sel = 5;  //XOR=5
-            imm_sel = 0;
+            alu_sel <= 5;  //XOR=5
+            imm_sel <= 0;
           end
         3'b101: begin
-            alu_sel = (inst[30]) ? (7) : (6);  //SRL=6, SRA=7
-            imm_sel = 5;
+            alu_sel <= (inst[30]) ? (7) : (6);  //SRL=6, SRA=7
+            imm_sel <= 5;
           end
         3'b110: begin
-            alu_sel = 8;  //OR=8
-            imm_sel = 0;
+            alu_sel <= 8;  //OR=8
+            imm_sel <= 0;
           end
         3'b111: begin 
-            alu_sel = 9;  //AND=9
-            imm_sel = 0;
+            alu_sel <= 9;  //AND=9
+            imm_sel <= 0;
           end
       endcase
       
-    pc_sel = 0;
-    wb_en = 1;
-    op1 = 0;
-    op2 = 1;
-    wb_sel = 1; // use blocking assignment here 
+    pc_sel <= 0;
+    wb_en <= 1;
+    op1 <= 0;
+    op2 <= 1;
+    wb_sel <= 1; // use blocking assignment here 
     
     end
     
     7'b0000011: begin  //load
       case(inst[14:12])
         3'b000: begin  //load byte
-              mem_mode = 0;  //read byte
+              mem_mode <= 0;  //read byte
             end
             
         3'b001: begin  //load half word
-              mem_mode = 1;  //read half-word
+              mem_mode <= 1;  //read half-word
             end
             
         3'b010: begin  //load word
-              mem_mode = 2;  //read word
+              mem_mode <= 2;  //read word
             end
             
           endcase
         
-        alu_sel = 0;  //offset
-        pc_sel = 0;
-        wb_en = 1;
-        op1 = 0;
-        op2 = 1;
-        wb_sel = 0;
-        imm_sel = 0;
-        mem_rw = 0;  //read from memory
+        alu_sel <= 0;  //offset
+        pc_sel <= 0;
+        wb_en <= 1;
+        op1 <= 0;
+        op2 <= 1;
+        wb_sel <= 0;
+        imm_sel <= 0;
+        mem_rw <= 0;  //read from memory
           
         end
     
     7'b0100011: begin  //S-type
-      case(inst[11:7])
+      case(inst[14:12])
         3'b000: begin  //store byte
-              mem_mode = 0;  //write byte
+              mem_mode <= 0;  //write byte
             end
             
         3'b001: begin  //store half word
-              mem_mode = 1;  //write half-word
+              mem_mode <= 1;  //write half-word
             end
             
         3'b010: begin  //store word
-              mem_mode = 2;  //write word
+              mem_mode <= 2;  //write word
             end
             
           endcase
         
-        alu_sel = 0;  //offset
-        pc_sel = 0;
-        wb_en = 0;
-        op1 = 0;
-        op2 = 1;
-        wb_sel = 0;
-        imm_sel = 1;  //s-type
-        mem_rw = 1;  //read from memory
+        alu_sel <= 0;  //offset
+        pc_sel <= 0;
+        wb_en <= 0;
+        op1 <= 0;
+        op2 <= 1;
+        wb_sel <= 0;
+        imm_sel <= 1;  //s-type
+        mem_rw <= 1;  //read from memory
           
         end
         
@@ -151,14 +151,6 @@ module data_memory(
 );
 
 reg [7:0] mem[0:1023];  //1024 locations each of 32 bit
-
-
-initial begin
-mem[0] = 0;
-mem[1] = 1;
-mem[2] = 2;
-mem[3] = 3;
-end
 
 always @(posedge clk) begin
 
@@ -202,10 +194,10 @@ module three_in_mux(
 always @(*) begin
   
   case(sel)
-    2'b00: out = in1;
-    2'b01: out = in2;
-    2'b10: out = in3;
-    default: out = 0;
+    2'b00: out <= in1;
+    2'b01: out <= in2;
+    2'b10: out <= in3;
+    default: out <= 0;
   endcase
 end
 
@@ -220,12 +212,12 @@ module imm_gen(
 always @(*) begin
 
   case(sel)
-    3'b000: assign imm = {{20{inst[24]}}, inst[24:13]};  //I-type
-    3'b001: assign imm = {{{20{inst[24]}}, inst[24:18]}, inst[4:0]};  //S-type
-    3'b010: assign imm = {{{{{{19{inst[24]}}, inst[24]}, inst[0]}, inst[23:18]}, inst[4:1]}, 1'b0};  //B-type    
-    3'b011: assign imm = {{12{inst[24]}}, inst[24:5]};  //U-type
-    3'b100: assign imm = {{{{{{11{inst[24]}}, inst[24]}, inst[12:5]}, inst[12]}, inst[23:14]}, 1'b0};  //J-type
-    3'b101: assign imm = {{27{32'b00000000000000000000000000000000}}, inst[17:13]};  //I-type SLL, SRL, SRA
+    3'b000: imm <= {{20{inst[24]}}, inst[24:13]};  //I-type
+    3'b001: imm <= {{{20{inst[24]}}, inst[24:18]}, inst[4:0]};  //S-type
+    3'b010: imm <= {{{{{{19{inst[24]}}, inst[24]}, inst[0]}, inst[23:18]}, inst[4:1]}, 1'b0};  //B-type    
+    3'b011: imm <= {{12{inst[24]}}, inst[24:5]};  //U-type
+    3'b100: imm <= {{{{{{11{inst[24]}}, inst[24]}, inst[12:5]}, inst[12]}, inst[23:14]}, 1'b0};  //J-type
+    3'b101: imm <= {{27{32'b00000000000000000000000000000000}}, inst[17:13]};  //I-type SLL, SRL, SRA
   endcase
 end
 
@@ -245,12 +237,12 @@ module branch_comparator(
 
   always @(*) begin
   
-    assign breq = ($signed(rs1) == $signed(rs2));               // BEQ
-    assign brne = ($signed(rs1) != $signed(rs2));               // BNE
-    assign brlt = ($signed(rs1) < $signed(rs2));                // BLT
-    assign bge = ($signed(rs1) >= $signed(rs2));               // BGE
-    assign bltu = ((rs1 < rs2) || (rs1[31] != rs2[31]));  // BLTU
-    assign bgeu = ((rs1 >= rs2) || (rs1[31] != rs2[31])); // BGEU
+    breq <= ($signed(rs1) == $signed(rs2));               // BEQ
+    brne <= ($signed(rs1) != $signed(rs2));               // BNE
+    brlt <= ($signed(rs1) < $signed(rs2));                // BLT
+    bge <= ($signed(rs1) >= $signed(rs2));               // BGE
+    bltu <= ((rs1 < rs2) || (rs1[31] != rs2[31]));  // BLTU
+    bgeu <= ((rs1 >= rs2) || (rs1[31] != rs2[31])); // BGEU
     
   end
 
@@ -269,17 +261,17 @@ module alu(
   // Combinational logic to implement the ALU operations
   always @(*) begin
     case (alu_sel)
-      4'b0000: result = operand_a + operand_b; // ADD
-      4'b0001: result = operand_a - operand_b; // SUB
-      4'b0010: result = operand_a << operand_b; // SLL
-      4'b0011: result = ($signed(operand_a) < $signed(operand_b)) ? 1 : 0;  //SLT using signed to convert a number to its signed 2's complement form
-      4'b0100: result = operand_a < operand_b ? 1 : 0; // SLTU
-      4'b0101: result = operand_a ^ operand_b; // XOR
-      4'b0110: result = operand_a >> operand_b; // SRL
-      4'b0111: result = $signed(operand_a) >>> operand_b;  // SRA
-      4'b1000: result = operand_a | operand_b; // OR
-      4'b1001: result = operand_a & operand_b; // AND
-      default: result = 0; // Default case
+      4'b0000: result <= operand_a + operand_b; // ADD
+      4'b0001: result <= operand_a - operand_b; // SUB
+      4'b0010: result <= operand_a << operand_b; // SLL
+      4'b0011: result <= ($signed(operand_a) < $signed(operand_b)) ? 1 : 0;  //SLT using signed to convert a number to its signed 2's complement form
+      4'b0100: result <= operand_a < operand_b ? 1 : 0; // SLTU
+      4'b0101: result <= operand_a ^ operand_b; // XOR
+      4'b0110: result <= operand_a >> operand_b; // SRL
+      4'b0111: result <= $signed(operand_a) >>> operand_b;  // SRA
+      4'b1000: result <= operand_a | operand_b; // OR
+      4'b1001: result <= operand_a & operand_b; // AND
+      default: result <= 0; // Default case
     endcase
   end
 
@@ -340,7 +332,8 @@ initial begin
 //  mem[0] = 32'b00000000000100000000000000010011;  //addi
 //  mem[0] = 32'b00000000000000000000000000000011;  //lb
   mem[0] = 32'b00000000000100000000000000100011;  //sb
-  mem[16] = 32'b00000000000000000000000110000011;  //lb
+  mem[4] = 32'b00000000000000000000000110000011;  //lb
+  mem[8] = 32'b00000000000000000000000110000011;  //lb
 end
 
 
